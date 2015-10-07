@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    <p>Welcome to {{ title }}</p>
+    <p><a href='./userlist'>List all users</a></p>
+    <p><a href='./adduser'>Create new user</a></p>
+    <p><a href='./deleteuser'>Delete user</a></p>
+    <p><a href='./modifyuser'>Modify user</a></p>
+  </body>
+</html>
