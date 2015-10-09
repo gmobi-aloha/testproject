@@ -16,7 +16,7 @@ router.get('/userlist', function(req, res) {
         objKey.forEach(function(objectid){
           var items = Object.keys(docs[objectid]);
           items.forEach(function(itemkey) {
-            var itemvalue =docs[objectid][itemkey];
+            var itemvalue = docs[objectid][itemkey];
             //console.log(objectid+': '+itemkey+' = '+itemvalue);
             if (itemkey == 'username') {
             	name.push(itemvalue);
@@ -80,6 +80,25 @@ router.post('/deleteuser', function(req, res) {
 
 router.get('/modifyuser', function(req, res) {
 	res.render('modifyuser', {title: 'Modify User'});
+});
+
+router.post('/modifyuser', function(req, res) {
+	var db = req.db;
+	var userName = req.body.username;
+	var Email = req.body.email;
+   
+	var collection = db.get('usercollection');
+
+	collection.update({
+		"username": userName
+	}, {$set: {"email": Email}}, function(err, doc) {
+        if (err) {
+            res.send("Error when deleting a user!");
+        } else {
+        	res.location('userlist');
+            res.redirect('userlist');
+        } 
+	});
 });
 
 module.exports = router;
