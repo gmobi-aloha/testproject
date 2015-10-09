@@ -7,7 +7,7 @@
   <body>
     <h1>{{ title }}</h1>
 
-    <form name='deleteuser' action='/deleteuser' method='delete'>
+    <form name='deleteuser' action='/deleteuser' method='post'>
             Username: <input type='text' name='username' placeholder='Enter Username'>
             <input type='submit' value='submit'>
     </form>

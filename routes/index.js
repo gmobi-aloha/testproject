@@ -47,7 +47,7 @@ router.post('/adduser', function(req, res) {
 		"username" : userName,
 		"email" : Email
 	}, function(err, doc) {
-		if(err) {
+		if (err) {
             res.send("Error when adding a new account!")
 		} else {
             res.location('userlist');
@@ -58,6 +58,24 @@ router.post('/adduser', function(req, res) {
 
 router.get('/deleteuser', function(req, res) {
 	res.render('deleteuser', {title: 'Delete User'});
+});
+
+router.post('/deleteuser', function(req, res) {
+	var db = req.db;
+	var userName = req.body.username;
+   
+	var collection = db.get('usercollection');
+
+	collection.remove({
+		"username": userName
+	}, function(err, doc) {
+        if (err) {
+            res.send("Error when deleting a user!");
+        } else {
+        	res.location('userlist');
+            res.redirect('userlist');
+        } 
+	});
 });
 
 router.get('/modifyuser', function(req, res) {
