@@ -35,6 +35,27 @@ router.get('/adduser', function(req, res) {
 	res.render('adduser', {title: 'Add New User'});
 });
 
+router.post('/adduser', function(req, res) {
+	var db = req.db;
+
+	var userName = req.body.username;
+	var Email = req.body.email;
+
+	var collection = db.get('usercollection');
+
+	collection.insert({
+		"username" : userName,
+		"email" : Email
+	}, function(err, doc) {
+		if(err) {
+            res.send("Error when adding a new account!")
+		} else {
+            res.location('userlist');
+            res.redirect('userlist');
+		}
+	});
+});
+
 router.get('/deleteuser', function(req, res) {
 	res.render('deleteuser', {title: 'Delete User'});
 });

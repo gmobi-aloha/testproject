@@ -7,7 +7,7 @@
   <body>
     <h1>{{ title }}</h1>
 
-    <form name='adduser' action='/adduser' method='put'>
+    <form name='modifyuser' action='/modifyuser' method='put'>
             Username: <input type='text' name='username' placeholder='Enter Username'>
             Email: <input type='email' name='email' placeholder='Enter Email'>
             <input type='submit' value='submit'>
