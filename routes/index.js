@@ -1,33 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/userlist', function(req, res) {
+router.route('/userlist').get(function(req, res) {
     var db = req.db;
     var collection = db.get('usercollection');
-    collection.find({}, {}, function(e, docs){
-    	var name = [];
-    	var objKey = Object.keys(docs);
-
-        objKey.forEach(function(objectid){
-          var items = Object.keys(docs[objectid]);
-          items.forEach(function(itemkey) {
-            var itemvalue = docs[objectid][itemkey];
-            //console.log(objectid+': '+itemkey+' = '+itemvalue);
-            if (itemkey == 'username') {
-            	name.push(itemvalue);
-            }
-          })
-        })
-
-        res.render('userlist', {
-            "userlist" : name
-        });
-        console.log(docs);
+    collection.find({},{},function(e,docs){
+        res.json(docs);
     });
 });
 
@@ -35,7 +19,7 @@ router.get('/adduser', function(req, res) {
 	res.render('adduser', {title: 'Add New User'});
 });
 
-router.post('/adduser', function(req, res) {
+router.route('/adduser').post(function(req, res) {
 	var db = req.db;
 
 	var userName = req.body.username;
@@ -48,18 +32,39 @@ router.post('/adduser', function(req, res) {
 		"email" : Email
 	}, function(err, doc) {
 		if (err) {
-            res.send("Error when adding a new account!")
-		} else {
-            res.location('userlist');
-            res.redirect('userlist');
-		}
+            return res.send("Error when adding a new account!")
+		} 
+		//res.send({ message: 'User Added'});
+		res.location('/');
+        res.redirect('/');
 	});
 });
 
+/*
 router.get('/deleteuser', function(req, res) {
 	res.render('deleteuser', {title: 'Delete User'});
 });
-
+*/
+var ObjectId = require('mongodb').ObjectID;
+router.route('/deleteuser/:id').get(function(req, res) {
+   
+    console.log("Coming to delete");	
+	var db = req.db;
+	var userToDelete = ObjectId(req.params.id);
+	var collection = db.get('usercollection');
+    
+	collection.remove({
+		_id: userToDelete
+	}, function(err) {
+        if (err) { 
+        	return res.send(err)
+		} 
+        //res.json({message: 'Successfully deleted'});
+        res.location('/');
+        res.redirect('/');
+	});
+});
+/*
 router.post('/deleteuser', function(req, res) {
 	var db = req.db;
 	var userName = req.body.username;
@@ -77,7 +82,7 @@ router.post('/deleteuser', function(req, res) {
         } 
 	});
 });
-
+*/
 router.get('/modifyuser', function(req, res) {
 	res.render('modifyuser', {title: 'Modify User'});
 });
