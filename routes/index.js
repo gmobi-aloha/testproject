@@ -35,16 +35,11 @@ router.route('/adduser').post(function(req, res) {
             return res.send("Error when adding a new account!")
 		} 
 		//res.send({ message: 'User Added'});
-		res.location('/');
-        res.redirect('/');
+		res.redirect('/');
 	});
 });
 
-/*
-router.get('/deleteuser', function(req, res) {
-	res.render('deleteuser', {title: 'Delete User'});
-});
-*/
+
 var ObjectId = require('mongodb').ObjectID;
 router.route('/deleteuser/:id').get(function(req, res) {
    
@@ -60,34 +55,15 @@ router.route('/deleteuser/:id').get(function(req, res) {
         	return res.send(err)
 		} 
         //res.json({message: 'Successfully deleted'});
-        res.location('/');
         res.redirect('/');
 	});
 });
-/*
-router.post('/deleteuser', function(req, res) {
-	var db = req.db;
-	var userName = req.body.username;
-   
-	var collection = db.get('usercollection');
 
-	collection.remove({
-		"username": userName
-	}, function(err, doc) {
-        if (err) {
-            res.send("Error when deleting a user!");
-        } else {
-        	res.location('userlist');
-            res.redirect('userlist');
-        } 
-	});
-});
-*/
 router.get('/modifyuser', function(req, res) {
 	res.render('modifyuser', {title: 'Modify User'});
 });
 
-router.post('/modifyuser', function(req, res) {
+router.post('/modifyuser/', function(req, res) {
 	var db = req.db;
 	var userName = req.body.username;
 	var Email = req.body.email;
@@ -100,8 +76,7 @@ router.post('/modifyuser', function(req, res) {
         if (err) {
             res.send("Error when deleting a user!");
         } else {
-        	res.location('userlist');
-            res.redirect('userlist');
+        	res.redirect('/');
         } 
 	});
 });
