@@ -30,7 +30,7 @@ function populateTable() {
         $.each(data, function(key, val){
 
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowuser" rel="' + val.username + '">' + val.username + '</a></td>';
+            tableContent += '<td>' + val.username + '</td>';
             tableContent += '<td>' + this.email + '</td>';
             tableContent += '<td><a href="/deleteuser/' + val._id + '"'+ ' class="linkdeleteuser" rel="' + val._id + '">delete</a></td>';
             tableContent += '</tr>';
