@@ -15,29 +15,30 @@ router.route('/userlist').get(function(req, res) {
     });
 });
 
-router.get('/adduser', function(req, res) {
-	res.render('adduser', {title: 'Add New User'});
-});
+router.route('/adduser')
 
-router.route('/adduser').post(function(req, res) {
-	var db = req.db;
+  .get(function(req, res) {
+  	  res.render('adduser', {title: 'Add New User'});
+  })
 
-	var userName = req.body.username;
-	var Email = req.body.email;
+  .post(function(req, res) {
+	  var db = req.db;
+	  var userName = req.body.username;
+	  var Email = req.body.email;
 
-	var collection = db.get('usercollection');
+	  var collection = db.get('usercollection');
 
-	collection.insert({
-		"username" : userName,
-		"email" : Email
-	}, function(err, doc) {
-		if (err) {
-            return res.send("Error when adding a new account!")
-		} 
-		//res.send({ message: 'User Added'});
-		res.redirect('/');
-	});
-});
+	  collection.insert({
+	 	  "username" : userName,
+		  "email" : Email
+	  }, function(err, doc) {
+		  if (err) {
+             return res.send("Error when adding a new account!")
+		  } 
+		  //res.send({ message: 'User Added'});
+		  res.redirect('/');
+	  });
+  });
 
 
 var ObjectId = require('mongodb').ObjectID;
@@ -76,26 +77,28 @@ router.route('/deleteuser/:id').delete(function(req, res) {
 	});
 });
 
-router.get('/modifyuser', function(req, res) {
+router.route('/modifyuser')
+  .get(function(req, res) {
 	res.render('modifyuser', {title: 'Modify User'});
-});
+  })
 
-router.post('/modifyuser/', function(req, res) {
-	var db = req.db;
-	var userName = req.body.username;
-	var Email = req.body.email;
+  .post(function(req, res) {
+	 var db = req.db;
+	 var userName = req.body.username;
+	 var Email = req.body.email;
    
-	var collection = db.get('usercollection');
+	 var collection = db.get('usercollection');
 
-	collection.update({
+	 collection.update({
 		"username": userName
-	}, {$set: {"email": Email}}, function(err, doc) {
-        if (err) {
-            res.send("Error when deleting a user!");
-        } else {
-        	res.redirect('/');
-        } 
-	});
-});
+	 }, {$set: {"email": Email}}, function(err, doc) {
+         if (err) {
+             res.send("Error when deleting a user!");
+         } else {
+         	res.redirect('/');
+         } 
+	 });
+  });
+
 
 module.exports = router;
