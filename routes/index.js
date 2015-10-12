@@ -59,6 +59,23 @@ router.route('/deleteuser/:id').get(function(req, res) {
 	});
 });
 
+router.route('/deleteuser/:id').delete(function(req, res) {
+   
+    console.log("Coming to Restful delete ");	
+	var db = req.db;
+	var userToDelete = ObjectId(req.params.id);
+	var collection = db.get('usercollection');
+    
+	collection.remove({
+		_id: userToDelete
+	}, function(err) {
+        if (err) { 
+        	return res.send(err)
+		} 
+        res.json({message: 'Successfully deleted'});
+	});
+});
+
 router.get('/modifyuser', function(req, res) {
 	res.render('modifyuser', {title: 'Modify User'});
 });
