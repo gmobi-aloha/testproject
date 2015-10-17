@@ -1,103 +1,100 @@
-var userListData = [];
- 
+(function($){
+    User = Backbone.Model.extend({
+       defaults: {
+         username: '',
+         email: ''
+       }
+    }); 
 
-// DOM Ready =============================================================
-$(document).ready(function() {
-	
-    // Populate the user table on initial page load
-    populateTable();
-
-    // Username link click
-    $('#userList').on('click', 'td a.linkshowuser', showUserInfo);
-
-    // Delete User link click
-    $('#userList').on('click', 'td a.linkdeleteuser', deleteUser);
-
-
-
-});
-
-// Fill table with data
-function populateTable() {
-
-    // Empty content string
-    var tableContent = '';
-
-    // jQuery AJAX call for JSON
-    $.getJSON('/userlist', function( data ) {
-        userListData = data;
-        // For each item in our JSON, add a table row and cells to the content string
-        $.each(data, function(key, val){
-
-            tableContent += '<tr>';
-            tableContent += '<td>' + val.username + '</td>';
-            tableContent += '<td>' + this.email + '</td>';
-            tableContent += '<td><a href="/deleteuser/' + val._id + '"'+ ' class="linkdeleteuser" rel="' + val._id + '">delete</a></td>';
-            tableContent += '</tr>';
-        });
-        tableContent += '</table>';
-
-        // Inject the whole content string into our existing HTML table
-        $('#userList').append(tableContent);
+    Users = Backbone.Collection.extend({
+       model: User,
+       url: "/userlist"
     });
-};
 
-function showUserInfor(event) {
-	// Prevent Link from Firing
-    event.preventDefault();
-
-    // Retrieve username from link rel attribute
-    var thisUserName = $(this).attr('rel');
-
-    // Get Index of object based on id value
-    var arrayPosition = userListData.map(function(arrayItem) { return arrayItem.username; }).indexOf(thisUserName);
-
+    var columns = [{
+         name: "username",
+         label: "UserName",
+         editable: false,
+         cell: "string"
+       }, {
+         name: "email",
+         label: "Email",
+         cell: "string"
+       }, {
+         name: "delete",
+         label: "Delete?",
+         cell: "string"
+    }];
+  
+    TableView = Backbone.View.extend({
+        el: $('body'),
+        initialize: function() {
+            var self = this;
+            this.collection = new Users();
+            this.collection.fetch().done(function(){
+                self.render();
+            });            
+        },
+        render: function(){
+            var grid = new Backgrid.Grid({
+              columns: columns,
+              collection: this.collection
+            });
+            $('#userList').append(grid.render().el);
+            /*
+            var tableContent = '';
+            this.collection.each(function(user) {
+                 tableContent += '<tr>';
+                 tableContent += '<td>' + user.get('username') + '</td>';
+                 tableContent += '<td>' + user.get('email') + '</td>'; 
+                 tableContent += '<td><a href="/deleteuser/' + user.get('_id') + '"'+ ' id="linkdeleteuser" rel="' + user.get('_id') + '">delete</a></td>';
+                 tableContent += '</tr>';             
+            });
+            $('#userList').append(tableContent);
+            */
+        }
+    });
     
-    //Populate Info Box
-    $('#userInfoName').text(thisUserObject.fullname);
-    $('#userInfoAge').text(thisUserObject.age);
-    $('#userInfoGender').text(thisUserObject.gender);
-    $('#userInfoLocation').text(thisUserObject.location);
+    
 
-};
+    var table_View = new TableView();
+    
 
-// Delete User
-function deleteUser(event) {
+})(jQuery);
 
-    console.log('delete user!');
-    event.preventDefault();
 
-    // Pop up a confirmation dialog
-    var confirmation = confirm('Are you sure you want to delete this user?');
+function generateTable() {
+   
+    var User = Backbone.Model.extend({});
+       
+    var Users = Backbone.Collection.extend({
+         model: User,
+         url: "/userlist"
+    }); 
 
-    // Check and make sure the user confirmed
-    if (confirmation === true) {
+    var userlist = new Users();
+    alert(userlist.fetch());
+    userlist.fetch();
+       
+    var columns = [{
+         name: "name",
+         label: "UserName",
+         editable: false,
+         cell: "string"
+       }, {
+         name: "email",
+         label: "Email",
+         cell: "string"
+       }, {
+         name: "delete",
+         label: "Delete?",
+         cell: "string"
+    }];
+       
+    var grid = new Backgrid.Grid({
+         columns: columns,
+         collections: userlist  
+    });
 
-        // If they did, do our delete
-        $.ajax({
-            type: 'DELETE',
-            url: '/deleteuser/' + $(this).attr('rel')
-        }).done(function( response ) {
-
-            // Check for a successful (blank) response
-            if (response.msg === '') {
-            }
-            else {
-                alert('Error: ' + response.msg);
-            }
-
-            // Update the table
-            populateTable();
-
-        });
-
-    }
-    else {
-
-        // If they said no to the confirm, do nothing
-        return false;
-
-    }
-
-};
-
+    $('#userList').append(grid.render().$el);
+}

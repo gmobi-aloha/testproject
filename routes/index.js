@@ -44,7 +44,6 @@ router.route('/adduser')
 var ObjectId = require('mongodb').ObjectID;
 router.route('/deleteuser/:id').get(function(req, res) {
    
-    console.log("Coming to delete");	
 	var db = req.db;
 	var userToDelete = ObjectId(req.params.id);
 	var collection = db.get('usercollection');
@@ -62,7 +61,6 @@ router.route('/deleteuser/:id').get(function(req, res) {
 
 router.route('/deleteuser/:id').delete(function(req, res) {
    
-    console.log("Coming to Restful delete ");	
 	var db = req.db;
 	var userToDelete = ObjectId(req.params.id);
 	var collection = db.get('usercollection');
