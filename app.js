@@ -15,6 +15,7 @@ var db = monk('localhost:27017/testproject');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var about = require('./routes/about');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use(function(req, res, next){
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api', api);
 
 app.get('/about', about);
 

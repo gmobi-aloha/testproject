@@ -8,7 +8,7 @@
 
     Users = Backbone.Collection.extend({
        model: User,
-       url: "/userlist"
+       url: "/api/users"
     });
 
     var columns = [{
@@ -21,8 +21,8 @@
          label: "Email",
          cell: "string"
        }, {
-         name: "delete",
-         label: "Delete?",
+         name: "action",
+         label: "Action",
          cell: "string"
     }];
   
@@ -47,7 +47,7 @@
                  tableContent += '<tr>';
                  tableContent += '<td>' + user.get('username') + '</td>';
                  tableContent += '<td>' + user.get('email') + '</td>'; 
-                 tableContent += '<td><a href="/deleteuser/' + user.get('_id') + '"'+ ' id="linkdeleteuser" rel="' + user.get('_id') + '">delete</a></td>';
+                 tableContent += '<td><a href="/api/users/' + user.get('_id') + '"'+ ' id="linkdeleteuser" rel="' + user.get('_id') + '">delete</a></td>';
                  tableContent += '</tr>';             
             });
             $('#userList').append(tableContent);
@@ -55,46 +55,6 @@
         }
     });
     
-    
-
     var table_View = new TableView();
     
-
 })(jQuery);
-
-
-function generateTable() {
-   
-    var User = Backbone.Model.extend({});
-       
-    var Users = Backbone.Collection.extend({
-         model: User,
-         url: "/userlist"
-    }); 
-
-    var userlist = new Users();
-    alert(userlist.fetch());
-    userlist.fetch();
-       
-    var columns = [{
-         name: "name",
-         label: "UserName",
-         editable: false,
-         cell: "string"
-       }, {
-         name: "email",
-         label: "Email",
-         cell: "string"
-       }, {
-         name: "delete",
-         label: "Delete?",
-         cell: "string"
-    }];
-       
-    var grid = new Backgrid.Grid({
-         columns: columns,
-         collections: userlist  
-    });
-
-    $('#userList').append(grid.render().$el);
-}
