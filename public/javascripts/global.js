@@ -73,6 +73,19 @@
                 window.location.reload();
             });
         },
+        modifyuser: function(event) {
+            event.preventDefault();
+            var id = $('input[name=id]').val();
+            var email = $('input[name=email2]').val();
+
+            $.ajax({
+                type: 'PUT',
+                data: {'email': email},
+                url: '/api/users/' + id
+            }).done(function(res) {
+                window.location.reload();
+            });
+        },
         deleteUser: function(event) {
             event.preventDefault();
             var _id = $('input[name=_id]').val();
@@ -82,23 +95,8 @@
             }).done(function(res) {
                 window.location.reload();
             });
-        },
-        modifyuser: function(event) {
-            
-            event.preventDefault();
-            var _id = $('input[name=_id]').val();
-            var email = $('input[name=email]').val();
-            alert(_id);
-
-            $.ajax({
-                type: 'PUT',
-                data: email=_email,
-                url: '/api/users/' + _id
-            }).done(function(res) {
-                window.location.reload();
-            });
         }
-
+        
     });
     
     var tableView = new TableView();
