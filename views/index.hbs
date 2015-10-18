@@ -10,21 +10,32 @@
     <p>Welcome to {{ title }}</p>
 
     <div>
-      <table id='userList'>   
-      <!--
-        <tr>
-          <th>UserName</th>
-          <th>Email</th>
-          <th>Delete?</th>
-        </tr>
-      -->
+      <form id='adduser' action='#'>
+            Username: <input type='text' name='username' placeholder='Enter Username'>
+            Email: <input type='text' name='email' placeholder='Enter Email'>
+            <button id='create'>Create User</button>
+      </form>
+    </div> 
+    <p> 
+    <div>
+      <table id='userList'>
       </table>  
     </div>
+    <p>
     <div>
-      <p><a href='./adduser'>Create new user</a></p>
-      <p><a href='./modifyuser'>Modify user</a></p>
-    </div>
-  
+      <form id='deleteuser' action='#'>
+            ID: <input type='text' name='_id' placeholder='Enter ID'>
+            <button id='delete'>Delete User</button>
+      </form>
+    </div> 
+    <p>
+    <div>
+      <form id='modifyuser' action='#'>
+            ID: <input type='text' name='_id' placeholder='Enter ID'>
+            Email: <input type='text' name='email' placeholder='Enter Email'>
+            <button id='modify'>Modify User</button>
+      </form>
+    </div>  
 
     <script type='text/javascript' src='/javascripts/jquery-2.1.4.min.js'></script>
     <script type='text/javascript' src='/javascripts/underscore-min.js'></script>

@@ -8,31 +8,13 @@ router.route('/').get(function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-
-router.route('/adduser')
-
-  .get(function(req, res) {
+router.route('/adduser').get(function(req, res) {
   	  res.render('adduser', {title: 'Add New User'});
-  })
+});
 
-  .post(function(req, res) {
-	  var db = req.db;
-	  var userName = req.body.username;
-	  var Email = req.body.email;
-
-	  var collection = db.get('usercollection');
-
-	  collection.insert({
-	 	  "username" : userName,
-		  "email" : Email
-	  }, function(err, doc) {
-		  if (err) {
-             return res.send("Error when adding a new account!")
-		  }
-		  res.redirect('/');
-	  });
-  });
-
+router.route('/modifyuser').get(function(req, res) {
+	res.render('modifyuser', {title: 'Modify User'});
+});
 
 /*
 router.route('/deleteuser/:id').get(function(req, res) {
@@ -50,14 +32,9 @@ router.route('/deleteuser/:id').get(function(req, res) {
         res.redirect('/');
 	});
 });
-*/
 
-router.route('/modifyuser')
-  .get(function(req, res) {
-	res.render('modifyuser', {title: 'Modify User'});
-  })
 
-  .put(function(req, res) {
+router.route('/modifyuser').put(function(req, res) {
 	 var db = req.db;
 	 var userName = req.body.username;
 	 var email = req.body.email;
@@ -73,7 +50,7 @@ router.route('/modifyuser')
          	res.redirect('/');
          } 
 	 });
-  });
-
+});
+*/
 
 module.exports = router;

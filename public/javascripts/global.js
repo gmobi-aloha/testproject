@@ -12,6 +12,11 @@
     });
 
     var columns = [{
+         name: "_id",
+         label: "ID",
+         editable: false,
+         cell: "string"
+       }, {
          name: "username",
          label: "UserName",
          editable: false,
@@ -19,10 +24,6 @@
        }, {
          name: "email",
          label: "Email",
-         cell: "string"
-       }, {
-         name: "action",
-         label: "Action",
          cell: "string"
     }];
   
@@ -33,9 +34,14 @@
             this.collection = new Users();
             this.collection.fetch().done(function(){
                 self.render();
-            });            
+            });
         },
-        render: function(){
+        events: {
+            "click #create": "createUser",
+            "click #delete": "deleteUser",
+            "click #modify": "modifyuser"
+        },
+        render: function() {
             var grid = new Backgrid.Grid({
               columns: columns,
               collection: this.collection
@@ -52,9 +58,49 @@
             });
             $('#userList').append(tableContent);
             */
+        },
+        createUser: function(event) {
+            event.preventDefault();
+            var username = $('input[name=username]').val();
+            var email = $('input[name=email]').val();
+            
+            $.ajax({
+                type: 'POST',
+                data: {'username': username, 'email': email},
+                url: '/api/users/',
+                dataType: 'JSON'
+            }).done(function(res) {
+                window.location.reload();
+            });
+        },
+        deleteUser: function(event) {
+            event.preventDefault();
+            var _id = $('input[name=_id]').val();
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/users/' + _id
+            }).done(function(res) {
+                window.location.reload();
+            });
+        },
+        modifyuser: function(event) {
+            
+            event.preventDefault();
+            var _id = $('input[name=_id]').val();
+            var email = $('input[name=email]').val();
+            alert(_id);
+
+            $.ajax({
+                type: 'PUT',
+                data: email=_email,
+                url: '/api/users/' + _id
+            }).done(function(res) {
+                window.location.reload();
+            });
         }
+
     });
     
-    var table_View = new TableView();
+    var tableView = new TableView();
     
 })(jQuery);
