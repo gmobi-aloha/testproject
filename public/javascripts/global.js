@@ -1,17 +1,72 @@
 (function($){
+
     User = Backbone.Model.extend({
        defaults: {
          username: '',
          email: ''
-       }
+       },
+       idAttribute: "_id"
     }); 
 
     Users = Backbone.Collection.extend({
        model: User,
        url: "/api/users"
     });
+   
 
-    var columns = [{
+    var deleteCell = Backgrid.Cell.extend({
+        template: _.template('<button>Delete</button>'),
+        events: {
+            click: "deleteRow"
+        },
+        deleteRow: function(event) {
+            event.preventDefault();
+            
+            var id = this.model.get('_id');
+            var email = this.model.get('email');
+            alert(email);
+            
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/users/' + id
+            }).done(function(res) {
+                window.location.reload();
+            }); 
+        },
+        render: function() {
+            this.$el.html(this.template());
+            this.delegateEvents();
+            return this;
+        } 
+    });
+
+    var modifyCell = Backgrid.Cell.extend({
+        template: _.template('<button>Modify</button>'),
+        events: {
+            click: "deleteRow"
+        },
+        deleteRow: function(event) {
+            event.preventDefault();
+            
+            var id = this.model.get('_id');
+            var email = this.model.get('email');
+            
+            $.ajax({
+                type: 'PUT',
+                data: {'email': email},
+                url: '/api/users/' + id
+            }).done(function(res) {
+                window.location.reload();
+            });
+        },
+        render: function() {
+            this.$el.html(this.template());
+            this.delegateEvents();
+            return this;
+        } 
+    });
+
+    var columns = [ {
          name: "_id",
          label: "ID",
          editable: false,
@@ -25,7 +80,19 @@
          name: "email",
          label: "Email",
          cell: "string"
-    }];
+       }, {
+         name: "",
+         label: "Delete",
+         editable: false,
+         cell: deleteCell
+       }, {
+         name: "",
+         label: "Modify",
+         editable: false,
+         cell: modifyCell
+       }];
+
+    
   
     TableView = Backbone.View.extend({
         el: $('body'),
@@ -37,27 +104,15 @@
             });
         },
         events: {
-            "click #create": "createUser",
-            "click #delete": "deleteUser",
-            "click #modify": "modifyuser"
+            "click #create": "createUser"
         },
         render: function() {
             var grid = new Backgrid.Grid({
               columns: columns,
               collection: this.collection
             });
+
             $('#userList').append(grid.render().el);
-            /*
-            var tableContent = '';
-            this.collection.each(function(user) {
-                 tableContent += '<tr>';
-                 tableContent += '<td>' + user.get('username') + '</td>';
-                 tableContent += '<td>' + user.get('email') + '</td>'; 
-                 tableContent += '<td><a href="/api/users/' + user.get('_id') + '"'+ ' id="linkdeleteuser" rel="' + user.get('_id') + '">delete</a></td>';
-                 tableContent += '</tr>';             
-            });
-            $('#userList').append(tableContent);
-            */
         },
         createUser: function(event) {
             event.preventDefault();
@@ -72,33 +127,12 @@
             }).done(function(res) {
                 window.location.reload();
             });
-        },
-        modifyuser: function(event) {
-            event.preventDefault();
-            var id = $('input[name=id]').val();
-            var email = $('input[name=email2]').val();
-
-            $.ajax({
-                type: 'PUT',
-                data: {'email': email},
-                url: '/api/users/' + id
-            }).done(function(res) {
-                window.location.reload();
-            });
-        },
-        deleteUser: function(event) {
-            event.preventDefault();
-            var _id = $('input[name=_id]').val();
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/users/' + _id
-            }).done(function(res) {
-                window.location.reload();
-            });
-        }
-        
+        }  
     });
     
     var tableView = new TableView();
     
+    
+
+
 })(jQuery);

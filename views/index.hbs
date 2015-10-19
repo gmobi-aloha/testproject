@@ -4,6 +4,9 @@
     <title>{{ title }}</title>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <link rel='stylesheet' href='/stylesheets/backgrid.min.css'/>
+    <link rel='stylesheet' href='/stylesheets/backgrid-select-all.min.css'/>
+    
+    
   </head>
   <body>
     <h1>{{ title }}</h1>
@@ -21,26 +24,12 @@
       <table id='userList'>
       </table>  
     </div>
-    <p>
-    <div>
-      <form id='deleteuser' action='#'>
-            ID: <input type='text' name='_id' placeholder='Enter ID'>
-            <button id='delete'>Delete User</button>
-      </form>
-    </div> 
-    <p>
-    <div>
-      <form id='modifyuser' action='#'>
-            ID: <input type='text' name='id' placeholder='Enter ID'>
-            Email: <input type='text' name='email2' placeholder='Enter Email'>
-            <button id='modify'>Modify User</button>
-      </form>
-    </div>  
 
     <script type='text/javascript' src='/javascripts/jquery-2.1.4.min.js'></script>
     <script type='text/javascript' src='/javascripts/underscore-min.js'></script>
     <script type='text/javascript' src='/javascripts/backbone-min.js'></script>
-    <script type='text/javascript' src='/javascripts/backgrid.min.js'></script>
+    <script type='text/javascript' src='/javascripts/backgrid.min.js'></script>  
+    <script type='text/javascript' src='/javascripts/backgrid-select-all.min.js'></script>
     <script type='text/javascript' src='/javascripts/global.js'></script> 
 
   </body> 
